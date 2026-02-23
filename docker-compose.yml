@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80" # site: http://localhost:8080
+    volumes:
+      - .:/var/www/html # app code
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root #
+      MYSQL_DATABASE: newspy #
+    ports:
+      - "3306:3306" # expose for local tools
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # init schema/data
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: newspy-pma
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80" # db admin: http://localhost:8081
+    depends_on:
+      - db
+
+volumes:
+  db_data:
