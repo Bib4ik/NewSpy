@@ -1,4 +1,6 @@
+<a href="/frontend/pages/login.html" class="">Авторизация</a>
 <a href="/frontend/pages/register.html" class="">Регистрация</a>
+
 
 <script>
     let form = document.querySelector('.appForm');

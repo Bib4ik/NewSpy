@@ -17,7 +17,7 @@ function authenticate() {
 
     try {
         $decoded = JWT::decode($token, new Key(JWT_SECRET, 'HS256'));
-        return $decoded; // возвращает данные из токена (userId, email)
+        return $decoded; // возвращает данные из токена (userId, login)
     } catch (Exception $e) {
         http_response_code(401);
         echo json_encode(['error' => 'Токен недействителен']);

@@ -11,5 +11,5 @@ $user = authenticate();
 echo json_encode([
     'message' => 'Привет!',
     'userId'  => $user->userId,
-    'email'   => $user->email
+    'login'   => $user->login
 ]);
