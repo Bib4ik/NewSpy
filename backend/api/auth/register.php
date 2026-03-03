@@ -1,31 +1,59 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../../database.php';
+require_once __DIR__ . '/../../../connect-bd.php';
 require_once __DIR__ . '/../../config.php';
+/** @var PDO $pdo */
 
-$data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $login = $_POST["login"] ?? '';
+    $email = $_POST["email"] ?? '';
+    $password = $_POST["password"] ?? '';
+    $passwordAgain = $_POST["passAgain"] ?? '';
 
-$email    = $data['email'] ?? '';
-$password = $data['password'] ?? '';
 
-if (!$email || !$password) {
+if (empty($login) || empty($email) || empty($password) || empty($passwordAgain)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Email и пароль обязательны']);
+    echo json_encode(['error' => 'Заполните все поля']);
+    exit;
+}
+if (strlen($login) < 3 || strlen($email) < 3 || strlen($password) < 3 || strlen($passwordAgain) < 3){
+    http_response_code(400);
+    echo json_encode(['error' => 'Логин, пароль и email не могут быть короче 3 символов']);
+    exit;
+}
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    http_response_code(400);
+    echo json_encode(['error' => 'Некоректный email']);
+    exit;
+}
+if ($password !== $passwordAgain) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Пароли не совпадают']);
+    exit;
+}
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+    http_response_code(400);
+    echo json_encode(['error' => 'Некорректный email']);
     exit;
 }
 
-// Проверяем нет ли уже такого пользователя
-$stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
-$stmt->execute([$email]);
-if ($stmt->fetch()) {
-    http_response_code(409);
-    echo json_encode(['error' => 'Пользователь уже существует']);
+$check = $pdo->prepare("SELECT id FROM users WHERE login = ? OR email = ?");
+$check->execute([$login, $email]);
+if ($check->fetch()) {
+    echo json_encode(['error' => 'Логин или Email уже заняты']);
     exit;
 }
 
-// Сохраняем пользователя
-$hash = password_hash($password, PASSWORD_BCRYPT);
-$stmt = $pdo->prepare('INSERT INTO users (email, password) VALUES (?, ?)');
-$stmt->execute([$email, $hash]);
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT); //Хешируем пароль перед тем как передать в бд
 
-echo json_encode(['message' => 'Регистрация успешна']);
+$stmt = $pdo->prepare('INSERT INTO users (login, email, password) VALUES (?, ?, ?)');
+
+if ($stmt->execute([$login, $email, $hashedPassword])){
+    echo json_encode(['good' => 'Вы успешно зарегистрированы']);
+}
+else{
+    http_response_code(400);
+    echo json_encode(['error' => 'Ошибка при регистрации']);
+    }
+}
+

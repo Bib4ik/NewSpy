@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/../../../database.php';
+require_once __DIR__ . '/../../../connect-bd.php';
 require_once __DIR__ . '/../../config.php';
 
 use Firebase\JWT\JWT;
