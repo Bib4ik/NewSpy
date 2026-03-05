@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Создание набора</title>
+</head>
+<body>
+
+<form action="/backend/createDeck.php" method="post" class="">
+  <input type="text" name="deckName" placeholder="Название набора">
+
+  <div id="cards-container">
+    <div class="card-input">
+      <input type="text" name="cards[]" placeholder="Карта 1" required>
+    </div>
+  </div>
+
+  <button type="button" onclick="addCard()">+ Добаавить карту</button>
+  <button type="submit">Создать колоду</button>
+
+</form>
+
+<script src="/frontend/js/createDeck.js"></script>
+</body>
+</html>
