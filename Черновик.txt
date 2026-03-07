@@ -1,0 +1,43 @@
+<form action="/backend/api/logic.php" method="post">
+
+    <div class="main__ChoiceDeck">
+        <h3>Выберите колоду из доступных:</h3>
+        <label>
+            <input type="radio" name="selected_deck" value="1">
+            Колода "English Verbs"
+        </label>
+        <label>
+            <input type="radio" name="selected_deck" value="2">
+            Колода "English Verbs"
+        </label>
+        <label>
+            <input type="radio" name="selected_deck" value="3">
+            Колода "English Verbs"
+        </label>
+    </div>
+
+
+    <div class="main__PlayerDeck">
+        <label>
+            <input type="radio" name="selected_deck" value="4">
+            Колода "English Verbs"
+        </label>
+        <label>
+            <input type="radio" name="selected_deck" value="5">
+            Колода "English Verbs"
+        </label>
+        <a href="/frontend/pages/createDeck.html" class="">Создать свой набор</a>
+    </div>
+
+    <div class="main__ChoicePlayer">
+        <h1>Выберите количество игроков</h1>
+        <input type="text">
+        <button type="submit">Создать игру</button>
+        <p></p>
+    </div>
+
+</form>
+<div class="auth">
+    <a href="/frontend/pages/login.html" class="">Авторизация</a>
+    <a href="/frontend/pages/register.html" class="">Регистрация</a>
+</div>
