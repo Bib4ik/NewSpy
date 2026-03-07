@@ -1,3 +1,35 @@
+async function submitDeck() {
+    const deckName = document.querySelector('input[name="deckName"]').value.trim();
+    const cardInputs = document.querySelectorAll('input[name="cards[]"]');
+    const cards = Array.from(cardInputs).map(i => i.value.trim()).filter(v => v);
+
+    if (!deckName || cards.length === 0) {
+        alert('Заполните название и добавьте хотя бы одну карту');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('deckName', deckName);
+    cards.forEach(card => formData.append('cards[]', card));
+
+    const token = localStorage.getItem('token');
+
+    const res = await fetch('/backend/api/createDeck.php', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token },
+        body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+        alert('Колода создана!');
+        window.location.href = '/';
+    } else {
+        alert(data.error || 'Ошибка');
+    }
+}
+
 function addCard() {
     const container = document.getElementById('cards-container');
     const cardCount = container.getElementsByClassName('card-row').length + 1;

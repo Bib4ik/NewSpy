@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json');
-require_once __DIR__ . '/../connect-bd.php';
-require_once __DIR__ . '/../backend/middleware/auth.php';
+require_once __DIR__ . '/../../connect-bd.php';
+require_once __DIR__ . '/../middleware/auth.php';
+
 /** @var PDO $pdo */
 $user = authenticate();
 

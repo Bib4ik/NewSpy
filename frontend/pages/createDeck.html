@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form action="/backend/createDeck.php" method="post" class="">
+<form action="/backend/api/createDeck.php" method="post" class="">
   <input type="text" name="deckName" placeholder="Название набора">
 
   <div id="cards-container">
@@ -19,7 +19,7 @@
   </div>
 
   <button type="button" onclick="addCard()">+ Добаавить карту</button>
-  <button type="submit">Создать колоду</button>
+  <button type="button" onclick="submitDeck()">Создать колоду</button>
 
 </form>
 

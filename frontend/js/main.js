@@ -20,7 +20,7 @@ let selectedDeck = null;
 // ─── LOAD DECKS ────────────────────────────────────────────────
 async function loadDecks() {
     try {
-        const res = await fetch('/backend/api/decks/getDecks.php', {
+        const res = await fetch('/backend/api/vitrina.php', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -55,24 +55,19 @@ function renderDecks(containerId, decks, countId, icon) {
         return;
     }
 
-    container.innerHTML = decks.map(deck => `
-      <div class="deck-card" id="deck-${deck.id}" onclick="selectDeck(${deck.id}, '${escHtml(deck.deck_name)}', '${escHtml(deck.owner)}')">
+        container.innerHTML = decks.map(deck => `
+      <div class="deck-card" id="deck-${deck.id}" onclick="selectDeck(${deck.id}, '${escHtml(deck.deck_name)}')">
         <div class="selected-check">✓</div>
         <div class="deck-card-inner">
           <div class="deck-icon">${icon}</div>
           <div class="deck-name">${escHtml(deck.deck_name)}</div>
-          <div class="deck-meta">
-            <span>${escHtml(deck.owner)}</span>
-            ${deck.card_count ? `<span class="deck-meta-dot"></span><span>${deck.card_count} карт</span>` : ''}
-          </div>
         </div>
       </div>
     `).join('');
 }
 
 // ─── SELECT DECK ───────────────────────────────────────────────
-function selectDeck(id, name, owner) {
-    // Снять предыдущий выбор
+function selectDeck(id, name) {
     if (selectedDeck) {
         const prev = document.getElementById(`deck-${selectedDeck}`);
         if (prev) prev.classList.remove('selected');
@@ -81,11 +76,10 @@ function selectDeck(id, name, owner) {
     selectedDeck = id;
     document.getElementById(`deck-${id}`).classList.add('selected');
 
-    // Обновить панель
     const panel = document.getElementById('play-panel');
     panel.classList.remove('empty');
     document.getElementById('selected-name').textContent = name;
-    document.getElementById('selected-meta').textContent = `Автор: ${owner}`;
+    document.getElementById('selected-meta').textContent = 'Набор готов к игре!';
 }
 
 // ─── START GAME ────────────────────────────────────────────────
